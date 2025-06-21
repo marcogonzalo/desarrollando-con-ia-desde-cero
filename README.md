@@ -33,7 +33,36 @@ He creado un fichero llamado `./memory-bank/plan-de-implementacion.md` y le he p
 > El plan de implementación también debe considerar un despliegue ágil y rápido tanto del MVP como de las consiguientes actualizaciones mayores
 > </despliegue>
 > </contenido>
+>
 
 El plan estaba bien planteado, así que lo acepté, aunque le pedí que revisara nuevamente el documento inicial porque faltaban algunos aspectos. Luego, le pedí que empleáramos Vite y Typescript en lugar de Javascript, y ShadCN en lugar de CSS3 puro. Y, finalmente, opté por pedirle que cambiara la estrategia, de tener una blacklist propia a que consultara la API de Google Safe Browsing de Google.
 
 Así finalicé con el refinamiento de la primera versión del Plan de implementación.
+
+<img alt="Plan de implementación" src="./assets/images/readme/paso-2-plan-implementacion.png" width="400" />
+
+Cabe acotar que yo tenía un conjunto de Reglas de Usuario predefinidas en mi editor de código y eso también ha influido en aspectos planteados en el Plan de Implementación.
+
+## Paso 3: Implementación de la Fase 1
+
+La Fase 1 fue ejecutada totalmente por la IA. Mi única intervención se limitó a decirle a la Terminal que no corrigiera el comando `npm test` que la Terminal sugería con una 's'. 😅
+
+Repitió varias veces un ciclo, relacionado con tests fallidos, y finalmente la cumplimentó.
+
+<img alt="Plan de implementación" src="./assets/images/readme/paso-3-fase-1-resultado.png" width="400" />
+
+### Probando el resultado de la Fase 1
+
+Luego, le pedí que me explicara cómo probar la extensión en esta primera fase y me dio todas las instrucciones.
+
+La extensión sólo mostraba un cuadro blanco, así que le reporté:
+> La extensión está instalada y activa, pero al presionar sobre ella sólo muestra un pequeño cuadro blanco.
+
+Fuimos iterando correcciones, hasta que finalmente se pudo ver algo. Aunque con ciertos fallos estéticos. Así que le indiqué el problema adjuntándole la imagen.
+
+<img alt="Primera visualización de la extensión" src="./assets/images/readme/paso-3-fase-1-prueba-inicial.png" width="400" />
+
+Luego de algunas iteraciones y pasarle capturas, logramos un resultado que cumplía con lo previso para la Fase 1.
+<img alt="Visualización de la extensión al corregir Fase 1" src="./assets/images/readme/paso-3-fase-1-prueba-final.png" width="400" />
+
+Finalmente, le indico que quiero que verifique el Plan de Implementación y que actualice su estado si se ha cumplido con todo lo previsto en la Fase 1.

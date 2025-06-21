@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Safe Browse Guard",
+  "version": "1.0.0",
+  "description": "Detecta sitios web sospechosos en tiempo real y ofrece consejos prácticos para evitar estafas.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://safebrowsing.googleapis.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_title": "Safe Browse Guard"
+  },
+  "options_page": "src/options/options.html"
+}

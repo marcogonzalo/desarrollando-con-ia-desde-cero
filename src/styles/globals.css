@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Extension-specific styles */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Popup specific styles */
+.popup-container {
+  width: 320px;
+  min-height: 200px;
+}
+
+/* Dark mode styles */
+.dark {
+  background-color: #1f2937;
+  color: #f9fafb;
+}
+
+/* Switch component styles */
+button[role="switch"] {
+  position: relative;
+  display: inline-flex;
+  height: 24px;
+  width: 44px;
+  shrink: 0;
+  cursor: pointer;
+  align-items: center;
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  background-color: #e5e7eb;
+}
+
+button[role="switch"][data-state="checked"] {
+  background-color: #3b82f6;
+}
+
+button[role="switch"] span {
+  pointer-events: none;
+  display: block;
+  height: 20px;
+  width: 20px;
+  border-radius: 9999px;
+  background-color: white;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transform: translateX(0px);
+}
+
+button[role="switch"][data-state="checked"] span {
+  transform: translateX(20px);
+} 

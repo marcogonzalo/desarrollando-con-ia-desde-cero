@@ -1,0 +1,64 @@
+{
+  "name": "presentacion-salamanca",
+  "version": "1.0.0",
+  "description": "En este repo muestro cómo he ido construyendo una idea de principio a fin para una presentación sobre programación con IA partiendo de cero.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "format": "prettier --write src/**/*.{ts,tsx,html,css}",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcogonzalo/presentacion-salamanca.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/marcogonzalo/presentacion-salamanca/issues"
+  },
+  "homepage": "https://github.com/marcogonzalo/presentacion-salamanca#readme",
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.10",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/chrome": "^0.0.326",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.3",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@typescript-eslint/eslint-plugin": "^8.34.1",
+    "@typescript-eslint/parser": "^8.34.1",
+    "@vitejs/plugin-react": "^4.5.2",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.29.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^30.0.2",
+    "jest-environment-jsdom": "^30.0.2",
+    "postcss": "^8.5.6",
+    "prettier": "^3.5.3",
+    "tailwindcss": "^4.1.10",
+    "ts-jest": "^29.4.0",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "@radix-ui/react-alert-dialog": "^1.1.14",
+    "@radix-ui/react-switch": "^1.2.5",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.519.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwind-merge": "^3.3.1"
+  }
+}
