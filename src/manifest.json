@@ -5,11 +5,15 @@
   "description": "Detecta sitios web sospechosos en tiempo real y ofrece consejos prácticos para evitar estafas.",
   "permissions": [
     "activeTab",
+    "tabs",
     "storage",
-    "notifications"
+    "notifications",
+    "webNavigation"
   ],
   "host_permissions": [
-    "https://safebrowsing.googleapis.com/*"
+    "https://safebrowsing.googleapis.com/*",
+    "http://*/*",
+    "https://*/*"
   ],
   "background": {
     "service_worker": "background.js"

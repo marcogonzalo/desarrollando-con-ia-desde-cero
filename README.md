@@ -41,7 +41,7 @@ Así finalicé con el refinamiento de la primera versión del Plan de implementa
 
 <img alt="Plan de implementación" src="./assets/images/readme/paso-2-plan-implementacion.png" width="400" />
 
-Cabe acotar que yo tenía un conjunto de Reglas de Usuario predefinidas en mi editor de código y eso también ha influido en aspectos planteados en el Plan de Implementación.
+Cabe acotar que yo tenía un conjunto de [Reglas de Usuario](https://docs.cursor.com/context/rules) predefinidas en mi editor de código y eso también ha influido en aspectos planteados en el Plan de Implementación.
 
 ## Paso 3: Implementación de la Fase 1
 
@@ -49,7 +49,7 @@ La Fase 1 fue ejecutada totalmente por la IA. Mi única intervención se limitó
 
 Repitió varias veces un ciclo, relacionado con tests fallidos, y finalmente la cumplimentó.
 
-<img alt="Plan de implementación" src="./assets/images/readme/paso-3-fase-1-resultado.png" width="400" />
+<img alt="Reporte de implementación de Fase 1" src="./assets/images/readme/paso-3-fase-1-resultado.png" width="400" />
 
 ### Probando el resultado de la Fase 1
 
@@ -63,6 +63,27 @@ Fuimos iterando correcciones, hasta que finalmente se pudo ver algo. Aunque con 
 <img alt="Primera visualización de la extensión" src="./assets/images/readme/paso-3-fase-1-prueba-inicial.png" width="400" />
 
 Luego de algunas iteraciones y pasarle capturas, logramos un resultado que cumplía con lo previso para la Fase 1.
+
 <img alt="Visualización de la extensión al corregir Fase 1" src="./assets/images/readme/paso-3-fase-1-prueba-final.png" width="400" />
 
 Finalmente, le indico que quiero que verifique el Plan de Implementación y que actualice su estado si se ha cumplido con todo lo previsto en la Fase 1.
+
+En total, fueron como 1 o 2 horas de trabajo (interrumpidas). Al comienzo estuvo unos 10 minutos configurando todo y luego otros 10 escribiendo todo. Más las pruebas y revisiones posteriores.
+
+## Paso 4: Implementación de la Fase 2
+
+Le pedí que procediera con la segunda fase. Estuvo desarrollando todo el código y la lógica durante unos 10-15 minutos más.
+
+Ahora, la extensión se conecta con Google Safe Browsing API y también evalúa patrones de nombre de URL, mostrando un pequeño indicador según si el sitio web es seguro o no.
+
+<img alt="Sitio web seguro" src="./assets/images/readme/paso-4-fase-2-icon.png" width="40" />
+<img alt="Sitio web seguro" src="./assets/images/readme/paso-4-fase-2-icon.png" width="40" />
+
+En total, con las pruebas realizadas en el navegador. Diría que no pasó más de media hora desde que le dije que empezara esta fase.
+
+<img alt="Reporte de implementación de Fase 1" src="./assets/images/readme/paso-4-fase-2-resultado.png" width="400" />
+
+Como curiosidad, esta vez decidió actualizar el Plan de Implementación por su cuenta, para lo que le he indicado que:
+> No actualices el plan de implementación hasta que te indique que todo está correcto.
+
+Principalmente, por poder revisar que todo anda bien en el navegador, ya que previamente fue el punto donde se presentaron fallos. Y, como me parecía una norma a mantener, decidí incorporarla como un [Regla de Proyecto](https://docs.cursor.com/context/rules) específica del banco de memoria, por lo que la coloqué en `./memory-bank/.cursor/rules/plan-de-implementacion.mdc`.

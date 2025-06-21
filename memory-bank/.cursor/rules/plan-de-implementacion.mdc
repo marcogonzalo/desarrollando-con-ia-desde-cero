@@ -1,0 +1,6 @@
+---
+description: Reglas relacionadas con el plan de implementación
+globs: memory-bank/plan-de-implementacion.md
+alwaysApply: true
+---
+No actualizar el plan de implementación hasta que se indique que todo está correcto.
