@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Browse Guard - Páginas de Prueba</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .test-section {
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+        }
+        
+        .test-section h2 {
+            color: #ffd700;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .test-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .test-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .test-card h3 {
+            margin: 0 0 10px 0;
+            color: #fff;
+            font-size: 1.1em;
+        }
+        
+        .test-card p {
+            margin: 0 0 15px 0;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .test-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-bottom: 5px;
+        }
+        
+        .test-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        .safe-link {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+        }
+        
+        .safe-link:hover {
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .status.danger { background: #e74c3c; }
+        .status.warning { background: #f39c12; }
+        .status.safe { background: #27ae60; }
+        
+        .instructions {
+            background: rgba(52, 152, 219, 0.2);
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .instructions h3 {
+            margin-top: 0;
+            color: #3498db;
+        }
+        
+        .instructions ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ Safe Browse Guard - Pruebas</h1>
+        
+        <div class="instructions">
+            <h3>📋 Instrucciones de Prueba</h3>
+            <ol>
+                <li>Asegúrate de tener la extensión <strong>Safe Browse Guard</strong> instalada y activada</li>
+                <li>Haz clic en los enlaces de prueba para verificar la detección</li>
+                <li>Los enlaces <span class="status danger">PELIGROSOS</span> deberían mostrar advertencias</li>
+                <li>Los enlaces <span class="status safe">SEGUROS</span> deberían cargar normalmente</li>
+                <li>Observa los diferentes tipos de mensajes de advertencia</li>
+            </ol>
+        </div>
+
+        <!-- Casos de Homógrafos Corregidos -->
+        <div class="test-section">
+            <h2>🔤 Homógrafos - Casos Corregidos</h2>
+            <div class="test-grid">
+                <div class="test-card">
+                    <h3>PayPal con I mayúscula</h3>
+                    <p>Prueba la detección de 'I' como 'l' (caso crítico corregido)</p>
+                    <a href="paypal-fake.html" class="test-link">paypaI.com</a>
+                    <span class="status danger">PELIGROSO</span>
+                </div>
+                
+                <div class="test-card">
+                    <h3>Google con Scripts Mixtos</h3>
+                    <p>Caracteres griegos mezclados con latinos</p>
+                    <a href="google-mixed.html" class="test-link">gοοgle.com</a>
+                    <span class="status danger">MIXED SCRIPTS</span>
+                </div>
+                
+                <div class="test-card">
+                    <h3>Google con Ceros</h3>
+                    <p>Sustitución de 'o' por '0'</p>
+                    <a href="google-zero.html" class="test-link">g00gle.com</a>
+                    <span class="status danger">PELIGROSO</span>
+                </div>
+                
+                <div class="test-card">
+                    <h3>Amazon con rn→m</h3>
+                    <p>Sustitución de 'm' por 'rn'</p>
+                    <a href="amazon-fake.html" class="test-link">arnazon.com</a>
+                    <span class="status danger">PELIGROSO</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Casos Unicode -->
+        <div class="test-section">
+            <h2>🌐 Caracteres Unicode</h2>
+            <div class="test-grid">
+                <div class="test-card">
+                    <h3>Microsoft con Omicrón Griego</h3>
+                    <p>Carácter griego ο en lugar de o latino</p>
+                    <a href="microsoft-unicode.html" class="test-link">microsοft.com</a>
+                    <span class="status danger">UNICODE</span>
+                </div>
+                
+                <div class="test-card">
+                    <h3>Apple con А Cirílica</h3>
+                    <p>Carácter cirílico а en lugar de a latino</p>
+                    <a href="apple-cyrillic.html" class="test-link">аpple.com</a>
+                    <span class="status danger">CIRÍLICO</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formularios de Phishing -->
+        <div class="test-section">
+            <h2>📝 Formularios de Phishing</h2>
+            <div class="test-grid">
+                <div class="test-card">
+                    <h3>Login Bancario Extremo</h3>
+                    <p>Formulario que simula un banco con múltiples campos sospechosos</p>
+                    <a href="bank-phishing.html" class="test-link">Banco Falso</a>
+                    <span class="status danger">PHISHING</span>
+                </div>
+                
+                <div class="test-card">
+                    <h3>PayPal Homógrafo</h3>
+                    <p>Combinación de homógrafo + formulario de phishing</p>
+                    <a href="paypal-fake.html" class="test-link">paypaI.com</a>
+                    <span class="status danger">HOMÓGRAFO + PHISHING</span>
+                </div>
+                
+                <div class="test-card">
+                    <h3>Múltiples Campos Sospechosos</h3>
+                    <p>Formulario con datos financieros, SSN, CVV, PIN y más</p>
+                    <a href="multiple-suspicious.html" class="test-link">Recolección Masiva</a>
+                    <span class="status danger">ALTAMENTE SOSPECHOSO</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Casos Seguros (Control) -->
+        <div class="test-section">
+            <h2>✅ Casos Seguros (Control)</h2>
+            <div class="test-grid">
+                <div class="test-card">
+                    <h3>Formulario de Contacto</h3>
+                    <p>Formulario legítimo que NO debe ser bloqueado</p>
+                    <a href="safe-contact.html" class="test-link safe-link">Contacto Seguro</a>
+                    <span class="status safe">SEGURO ✓</span>
+                </div>
+                
+                <div class="test-card">
+                    <h3>Página Normal</h3>
+                    <p>Contenido web corporativo sin formularios</p>
+                    <a href="safe-normal.html" class="test-link safe-link">Página Empresarial</a>
+                    <span class="status safe">SEGURO ✓</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información de Debug -->
+        <div class="test-section">
+            <h2>🔧 Debug y Herramientas</h2>
+            <div class="test-grid">
+                <div class="test-card">
+                    <h3>Test de Rendimiento</h3>
+                    <p>Página con muchos elementos para probar rendimiento</p>
+                    <a href="performance-test.html" class="test-link">Test Rendimiento</a>
+                    <span class="status warning">PRUEBA</span>
+                </div>
+                
+                <div class="test-card">
+                    <h3>Casos Límite</h3>
+                    <p>URLs y formularios en casos extremos</p>
+                    <a href="edge-cases.html" class="test-link">Casos Límite</a>
+                    <span class="status warning">PRUEBA</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

