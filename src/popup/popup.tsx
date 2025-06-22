@@ -114,7 +114,7 @@ export const Popup: React.FC = () => {
       )}
     </div>
   );
-};
+}; 
 
 // Renderizar el componente
 const container = document.getElementById('popup-root');

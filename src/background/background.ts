@@ -1,11 +1,13 @@
 import { getSafeBrowsingService, ThreatMatch } from '../lib/safeBrowsing';
 import { detectSuspiciousPatterns, getCombinedThreatLevel, SuspiciousPattern } from '../lib/urlPatterns';
+import { ContentAnalysisResult } from '../lib/contentAnalysis';
 
 interface TabInfo {
   url?: string;
   status?: 'safe' | 'danger' | 'unknown';
   threat?: ThreatMatch;
   patterns?: SuspiciousPattern[];
+  contentAnalysis?: ContentAnalysisResult;
   lastChecked?: number;
 }
 
@@ -44,7 +46,7 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
   }
 });
 
-// Handle messages from popup
+// Handle messages from popup and content scripts
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'getCurrentTabStatus') {
     handleGetCurrentTabStatus(sendResponse);
@@ -54,6 +56,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'recheckCurrentTab') {
     handleRecheckCurrentTab(sendResponse);
     return true;
+  }
+  
+  if (request.type === 'CONTENT_ANALYSIS_RESULT') {
+    handleContentAnalysisResult(request, sender);
+    return false; // No response needed
   }
 });
 
@@ -156,7 +163,7 @@ async function checkTabSafety(tabId: number, url: string): Promise<void> {
   }
 }
 
-function updateIconAndStorage(tabId: number, status: 'safe' | 'danger' | 'unknown', threat?: ThreatMatch | null, patterns?: SuspiciousPattern[]): void {
+function updateIconAndStorage(tabId: number, status: 'safe' | 'danger' | 'unknown', threat?: ThreatMatch | null, patterns?: SuspiciousPattern[], contentAnalysis?: ContentAnalysisResult): void {
   // Update extension icon
   const iconPaths = {
     safe: {
@@ -196,7 +203,8 @@ function updateIconAndStorage(tabId: number, status: 'safe' | 'danger' | 'unknow
   chrome.storage.local.set({
     currentSiteStatus: status,
     currentThreat: threat,
-    currentPatterns: patterns || []
+    currentPatterns: patterns || [],
+    currentContentAnalysis: contentAnalysis
   });
 }
 
@@ -300,4 +308,111 @@ setInterval(() => {
 // Clean up cache when tabs are closed
 chrome.tabs.onRemoved.addListener((tabId) => {
   tabCache.delete(tabId);
-}); 
+});
+
+/**
+ * Handle content analysis results from content script
+ */
+function handleContentAnalysisResult(request: any, sender: chrome.runtime.MessageSender): void {
+  try {
+    if (!sender.tab?.id || !request.result) {
+      return;
+    }
+
+    const tabId = sender.tab.id;
+    const contentAnalysis: ContentAnalysisResult = request.result;
+    
+    // Get current tab info or create new one
+    let tabInfo: TabInfo = tabCache.get(tabId) || { url: request.url };
+    
+    // Update with content analysis
+    tabInfo.contentAnalysis = contentAnalysis;
+    tabInfo.lastChecked = Date.now();
+    
+    // Determine if content analysis indicates danger
+    let contentThreatLevel: 'safe' | 'danger' | 'unknown' = 'safe';
+    
+    if (contentAnalysis.riskLevel === 'high') {
+      contentThreatLevel = 'danger';
+    } else if (contentAnalysis.riskLevel === 'medium' && contentAnalysis.score < 60) {
+      contentThreatLevel = 'danger';
+    }
+    
+    // Update overall status considering all threat sources
+    let finalStatus = tabInfo.status || 'safe';
+    
+    // If we already detected API or pattern threats, keep danger status
+    if (finalStatus !== 'danger' && contentThreatLevel === 'danger') {
+      finalStatus = 'danger';
+    }
+    
+    tabInfo.status = finalStatus;
+    tabCache.set(tabId, tabInfo);
+    
+    // Update icon and storage
+    updateIconAndStorage(tabId, finalStatus, tabInfo.threat, tabInfo.patterns, contentAnalysis);
+    
+    // Show notification for high-risk content issues
+    if (contentAnalysis.riskLevel === 'high' && contentAnalysis.issues.length > 0) {
+      showContentAnalysisNotification(contentAnalysis);
+    }
+    
+    // If content analysis shows high risk, consider redirecting to warning page
+    if (contentAnalysis.riskLevel === 'high' && contentAnalysis.score < 40) {
+      redirectToWarningPage(tabId, {
+        type: 'content',
+        severity: 'high',
+        details: `Content analysis detected ${contentAnalysis.issues.length} security issues`,
+        url: request.url
+      }, contentAnalysis);
+    }
+    
+  } catch (error) {
+    console.error('Error handling content analysis result:', error);
+  }
+}
+
+/**
+ * Show notification for content analysis issues
+ */
+function showContentAnalysisNotification(contentAnalysis: ContentAnalysisResult): void {
+  const highIssues = contentAnalysis.issues.filter(issue => issue.severity === 'high');
+  const issue = highIssues[0] || contentAnalysis.issues[0];
+  
+  chrome.notifications.create({
+    type: 'basic',
+    iconUrl: 'icons/icon-danger-48.png',
+    title: 'Safe Browse Guard - Contenido Sospechoso',
+    message: issue ? issue.description : 'Se detectaron problemas de seguridad en el contenido',
+    priority: 1
+  });
+}
+
+/**
+ * Redirect to warning page
+ */
+function redirectToWarningPage(tabId: number, threat: any, contentAnalysis?: ContentAnalysisResult): void {
+  try {
+    // Store content analysis in session storage (will be accessed by warning page)
+    if (contentAnalysis) {
+      // We'll use chrome.tabs.executeScript to store in sessionStorage
+      chrome.scripting.executeScript({
+        target: { tabId },
+        func: (analysis) => {
+          sessionStorage.setItem('contentAnalysis', JSON.stringify(analysis));
+        },
+        args: [contentAnalysis]
+      }).catch(console.error);
+    }
+    
+    // Build warning page URL with parameters
+    const warningUrl = chrome.runtime.getURL('warning/warning.html') + 
+      `?type=${threat.type}&severity=${threat.severity}&details=${encodeURIComponent(threat.details)}&url=${encodeURIComponent(threat.url)}`;
+    
+    // Navigate to warning page
+    chrome.tabs.update(tabId, { url: warningUrl });
+    
+  } catch (error) {
+    console.error('Error redirecting to warning page:', error);
+  }
+} 

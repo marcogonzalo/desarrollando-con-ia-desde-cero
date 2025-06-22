@@ -87,3 +87,13 @@ Como curiosidad, esta vez decidió actualizar el Plan de Implementación por su 
 > No actualices el plan de implementación hasta que te indique que todo está correcto.
 
 Principalmente, por poder revisar que todo anda bien en el navegador, ya que previamente fue el punto donde se presentaron fallos. Y, como me parecía una norma a mantener, decidí incorporarla como un [Regla de Proyecto](https://docs.cursor.com/context/rules) específica del banco de memoria, por lo que la coloqué en `./memory-bank/.cursor/rules/plan-de-implementacion.mdc`.
+
+## Paso 5: Implementación de la Fase 3
+
+La fase 3 se ejecutó sin muchos inconvenientes.
+
+<img alt="Reporte de implementación de Fase 3 con fallos" src="./assets/images/readme/paso-5-fase-3-resultado.png" width="400" />
+
+Sin embargo, hubo un problema de incompatiibilidad de caracteres que generaba que dos casos no se verificaran adecuadamente: Conteniendo una "i" mayúscula como "L" minúscula y conteniendo una omincrón como una "o". Tras varias iteraciones (le pedí que volviera a revisar esos cosas), logró dar con la solución. 
+
+<img alt="Reporte de implementación de Fase 3" src="./assets/images/readme/paso-5-fase-3-resultado2.png" width="400" />

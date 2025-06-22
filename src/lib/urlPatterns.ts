@@ -28,6 +28,7 @@ const HOMOGRAPH_CHARS = {
   'x': ['х', 'χ'],       // Cyrillic x, Greek chi
   'y': ['у', 'γ'],       // Cyrillic y, Greek gamma
   'i': ['і', 'ι', '1', 'l', 'I'], // Cyrillic i, Greek iota, one, lowercase L, uppercase i
+  'l': ['I', '1', 'і'], // uppercase I, one, Cyrillic i can look like l
   'm': ['rn'],           // rn can look like m
   'w': ['vv'],           // double v can look like w
   'n': ['ո'],            // Armenian o can look like n
@@ -81,16 +82,84 @@ export function detectSuspiciousPatterns(url: string): SuspiciousPattern[] {
 export function checkHomographAttack(url: string): SuspiciousPattern | null {
   try {
     const urlObj = new URL(url);
-    const hostname = urlObj.hostname.toLowerCase();
     
-    // Check for mixed scripts (different writing systems)
-    if (hasMixedScripts(hostname)) {
-      return {
-        type: 'homograph',
-        severity: 'high',
-        description: 'Domain contains mixed scripts that could be used for spoofing',
-        url
-      };
+    // Extract hostname from original URL string BEFORE URL processing to preserve case and Unicode
+    const urlHostname = url.split('://')[1]?.split('/')[0]?.split('?')[0]?.split('#')[0] || urlObj.hostname;
+    let originalHostname = urlHostname;
+    
+    // Also handle Unicode characters that might be converted to Punycode
+    if (/[^\x00-\x7F]/.test(urlHostname)) {
+      originalHostname = urlHostname;
+    }
+    
+    // Also handle case where URL object converted Unicode to Punycode
+    // Try to detect common Unicode homographs in the original URL
+    if (originalHostname.startsWith('xn--') && url.includes('://')) {
+      const urlPart = url.split('://')[1]?.split('/')[0];
+      if (urlPart && /[^\x00-\x7F]/.test(urlPart)) {
+        originalHostname = urlPart;
+      }
+    }
+    
+    const hostname = originalHostname.toLowerCase();
+    
+    // Extended list of domains to check
+    const allDomains = [
+      ...BRAND_NAMES,
+      'google', 'amazon', 'paypal', 'microsoft', 'apple', 'facebook', 'twitter'
+    ];
+
+    // Check for mixed scripts FIRST (different writing systems)
+    if (hasMixedScripts(originalHostname)) {
+      // Check if it's targeting a specific brand with mixed scripts
+      for (const domain of allDomains) {
+        // Create a version with all Unicode characters replaced by their ASCII equivalents
+        let normalizedDomain = originalHostname.toLowerCase();
+        for (const [original, substitutes] of Object.entries(HOMOGRAPH_CHARS)) {
+          for (const substitute of substitutes) {
+            // Only replace non-ASCII characters to avoid over-replacement
+            if (substitute.charCodeAt(0) > 127) {
+              normalizedDomain = normalizedDomain.replace(new RegExp(escapeRegExp(substitute), 'g'), original);
+            }
+          }
+        }
+        
+        // Check if the normalized domain matches or contains a brand name
+        if (normalizedDomain.includes(domain) || normalizedDomain.split('.')[0] === domain) {
+          // Make sure it's not the legitimate domain
+          const originalDomainPart = originalHostname.toLowerCase().split('.')[0];
+          if (originalDomainPart !== domain) {
+            return {
+              type: 'homograph',
+              severity: 'high',
+              description: 'Domain contains mixed scripts that could be used for spoofing',
+              url
+            };
+          }
+        }
+      }
+    }
+
+    // Special check for uppercase I that might be confused with lowercase l
+    if (originalHostname.includes('I')) {
+      const withReplacedI = originalHostname.replace(/I/g, 'l').toLowerCase();
+      
+      for (const domain of allDomains) {
+        // Check exact match or close match
+        if (withReplacedI === domain + '.com' || 
+            withReplacedI.split('.')[0] === domain) {
+          // Make sure the original hostname is NOT the legitimate domain
+          const originalDomainPart = originalHostname.toLowerCase().split('.')[0];
+          if (originalDomainPart !== domain) {
+            return {
+              type: 'homograph',
+              severity: 'high',
+              description: `Potential homograph attack: 'I' may be impersonating 'l' in '${domain}'`,
+              url
+            };
+          }
+        }
+      }
     }
 
     // Check for common character substitutions
@@ -100,28 +169,59 @@ export function checkHomographAttack(url: string): SuspiciousPattern | null {
           // Check if this creates a brand name lookalike
           const possibleBrand = hostname.replace(new RegExp(escapeRegExp(substitute), 'g'), original);
           
-          // Check against known brands
-          for (const brand of BRAND_NAMES) {
-            if (possibleBrand.includes(brand) && hostname.includes(substitute)) {
-              return {
-                type: 'homograph',
-                severity: 'high',
-                description: `Potential homograph attack: '${substitute}' may be impersonating '${original}'`,
-                url
-              };
+          // Check against all domains
+          for (const domain of allDomains) {
+            if (possibleBrand.includes(domain)) {
+              // Make sure the original hostname is NOT the legitimate domain
+              const originalDomainPart = hostname.split('.')[0];
+              const possibleDomainPart = possibleBrand.split('.')[0];
+              
+              // Only flag if:
+              // 1. The original domain part is different from the target domain
+              // 2. The possible brand actually matches the domain exactly or contains it prominently
+              if (originalDomainPart !== domain && 
+                  (possibleDomainPart === domain || possibleDomainPart.includes(domain))) {
+                return {
+                  type: 'homograph',
+                  severity: 'high',
+                  description: `Potential homograph attack: '${substitute}' may be impersonating '${original}' in '${domain}'`,
+                  url
+                };
+              }
             }
           }
           
-          // Also check for specific known suspicious patterns
-          if ((substitute === '0' && original === 'o' && possibleBrand.includes('google')) ||
-              (substitute === 'rn' && original === 'm' && possibleBrand.includes('amazon')) ||
-              (substitute === 'I' && original === 'i' && possibleBrand.includes('paypal'))) {
-            return {
-              type: 'homograph',
-              severity: 'high',
-              description: `Potential homograph attack: '${substitute}' may be impersonating '${original}'`,
-              url
-            };
+          // Check for suspicious character substitutions in any domain (more permissive)
+          if ((substitute === '0' && original === 'o') ||
+              (substitute === 'rn' && original === 'm') ||
+              (substitute === 'I' && original === 'i') ||
+              (substitute === 'I' && original === 'l') ||
+              (substitute === '1' && original === 'l') ||
+              (substitute === '1' && original === 'i') ||
+              (substitute === 'l' && original === 'i')) {
+            // Flag if it looks like a real domain being spoofed
+            if (hostname.length > 3 && hostname.includes('.')) {
+              // Check if this could be spoofing a known domain
+              const correctedDomain = possibleBrand.split('.')[0];
+              
+              // Only flag if the corrected version would be a known domain
+              let shouldFlag = false;
+              for (const domain of allDomains) {
+                if (correctedDomain === domain || correctedDomain.includes(domain)) {
+                  shouldFlag = true;
+                  break;
+                }
+              }
+              
+              if (shouldFlag) {
+                return {
+                  type: 'homograph',
+                  severity: 'high',
+                  description: `Potential homograph attack: '${substitute}' may be impersonating '${original}'`,
+                  url
+                };
+              }
+            }
           }
         }
       }
