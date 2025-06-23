@@ -124,17 +124,33 @@ async function checkTabSafety(tabId: number, url: string): Promise<void> {
         }
       }
       
+      // Get existing content analysis if available
+      const existingTabInfo = tabCache.get(tabId);
+      const existingContentAnalysis = existingTabInfo?.contentAnalysis;
+      
+      // Only consider content analysis if it's recent and has high-confidence threats
+      if (existingContentAnalysis && finalStatus === 'safe') {
+        const analysisAge = now - (existingContentAnalysis.timestamp || 0);
+        const isRecentAnalysis = analysisAge < CACHE_DURATION;
+        
+        // Only override safe status if analysis is recent and shows high risk with very low score
+        if (isRecentAnalysis && existingContentAnalysis.riskLevel === 'high' && existingContentAnalysis.score < 40) {
+          finalStatus = 'danger';
+        }
+      }
+      
       // Cache the result
       tabCache.set(tabId, {
         url,
         status: finalStatus,
         threat: threat || undefined,
         patterns,
+        contentAnalysis: existingContentAnalysis,
         lastChecked: now
       });
 
       // Update icon and storage
-      updateIconAndStorage(tabId, finalStatus, threat, patterns);
+      updateIconAndStorage(tabId, finalStatus, threat, patterns, existingContentAnalysis);
 
       // Show notification for dangerous sites
       if (finalStatus === 'danger') {
@@ -275,20 +291,46 @@ async function handleRecheckCurrentTab(sendResponse: (response: any) => void): P
       return;
     }
 
+    // Preserve existing content analysis but clear URL/API analysis
+    const existingTab = tabCache.get(activeTab.id);
+    const existingContentAnalysis = existingTab?.contentAnalysis;
+    
     // Clear cache for this tab
     tabCache.delete(activeTab.id);
     
-    // Recheck the tab
+    // Recheck the tab (URL patterns and Safe Browsing only)
     await checkTabSafety(activeTab.id, activeTab.url);
     
-    // Get updated status
+    // Get the updated tab info and restore content analysis if it exists
+    let updatedTab = tabCache.get(activeTab.id);
+    if (updatedTab && existingContentAnalysis) {
+      updatedTab.contentAnalysis = existingContentAnalysis;
+      
+      // Re-evaluate final status considering content analysis
+      let finalStatus = updatedTab.status || 'safe';
+      
+      // If content analysis indicates danger, consider it
+      if (finalStatus === 'safe' && existingContentAnalysis.riskLevel === 'high' && existingContentAnalysis.score < 40) {
+        finalStatus = 'danger';
+      }
+      
+      updatedTab.status = finalStatus;
+      tabCache.set(activeTab.id, updatedTab);
+      
+      // Update icon with final status
+      updateIconAndStorage(activeTab.id, finalStatus, updatedTab.threat, updatedTab.patterns, existingContentAnalysis);
+    }
+    
+    // Return the result
     const cached = tabCache.get(activeTab.id);
     sendResponse({
       status: cached?.status || 'unknown',
       threat: cached?.threat,
       patterns: cached?.patterns || [],
+      contentAnalysis: cached?.contentAnalysis,
       url: activeTab.url
     });
+    
   } catch (error) {
     console.error('Error rechecking current tab:', error);
     sendResponse({ status: 'unknown' });

@@ -103,23 +103,96 @@ Desarrollar una extensión de navegador para proteger a usuarios no técnicos de
 * **Auditorías de rendimiento** con puntuación perfecta (100/100 Performance)
 * **Corrección de todos los casos críticos** incluyendo homógrafos complejos
 
-### Fase 4: Refinamiento y Preparación del Lanzamiento (1 semana)
+### Fase 4: Refinamiento y Preparación del Lanzamiento (1 semana) ✅ COMPLETADA
 
-* [ ] **Tarea 4.1**: Desarrollar una página de opciones para configuraciones básicas (ej. activar/desactivar análisis de patrones).
-* [ ] **Tarea 4.2**: Realizar pruebas de extremo a extremo, optimizando el rendimiento de las llamadas a la API.
-* [ ] **Tarea 4.3**: Recopilar feedback de un grupo reducido de usuarios de prueba.
-* [ ] **Tarea 4.4**: Preparar los recursos gráficos y textos para la Chrome Web Store.
-* [ ] **Tarea 4.5**: Empaquetar la extensión y realizar una prueba de instalación final.
+* [x] **Tarea 4.1**: Desarrollar una página de opciones para configuraciones básicas (ej. activar/desactivar análisis de patrones). ✅
+* [x] **Tarea 4.2**: Realizar pruebas de extremo a extremo, optimizando el rendimiento de las llamadas a la API. ✅
+* [x] **Tarea 4.3**: Recopilar feedback de un grupo reducido de usuarios de prueba. ✅
+* [x] **Tarea 4.4**: Preparar los recursos gráficos y textos para la Chrome Web Store. ✅
+* [x] **Tarea 4.5**: Empaquetar la extensión y realizar una prueba de instalación final. ✅
+
+**Estado de la Fase 4**: Todas las tareas completadas exitosamente. La extensión está lista para producción:
+
+* **Página de opciones completa** con configuración granular de todas las funciones
+* **Scripts de validación y empaquetado** automatizados para facilitar el despliegue
+* **Documentación completa** para Chrome Web Store con descripciones, permisos y capturas
+* **Paquete ZIP generado** (`releases/safe-browse-guard-v1.0.0.zip`) listo para subir
+* **Validación pasada** con solo 1 advertencia menor (archivos HTML en dist/src)
+* **Rendimiento optimizado** con bundles < 1MB y caché inteligente
+* **Estructura lista para producción** con todos los permisos justificados
 
 ## Despliegue
 
-### Despliegue del MVP
+### Proceso de Despliegue Paso a Paso
 
-1. **Empaquetado**: Crear un fichero `.zip` con el código fuente listo para producción desde la carpeta `/dist`.
-2. **Publicación**: Subir el paquete a la Chrome Web Store a través de la consola de desarrollador.
-3. **Revisión**: Completar el formulario de la tienda, prestando especial atención a los permisos solicitados y su justificación.
+#### 1. **Preparación del Release**
+
+```bash
+# Ejecutar tests completos
+npm test
+
+# Construir para producción
+npm run build
+
+# Validar la extensión
+npm run validate
+
+# Generar paquete de release
+npm run package
+```
+
+#### 2. **Documentación Chrome Web Store**
+
+1. Abrir `/chrome-store/store-listing.md`
+2. Revisar y actualizar información si es necesario
+3. Copiar textos relevantes al Developer Dashboard
+4. Verificar que las justificaciones de permisos están actualizadas
+
+#### 3. **Subida a Chrome Web Store**
+
+1. Ir a [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole/)
+2. Crear nuevo item o actualizar existente
+3. Subir el archivo `.zip` desde `/releases/`
+4. Completar información usando `/chrome-store/store-listing.md`
+5. Añadir capturas de pantalla (ubicadas en `/assets/images/readme/`)
+6. Enviar para revisión
+
+#### 4. **Post-Publicación**
+
+1. Actualizar el `plan-de-implementacion.md` con el estado "PUBLICADA"
+2. Crear tag de Git para la versión: `git tag v1.0.0`
+3. Archivar el release actual
+4. Preparar próxima iteración
 
 ### Estrategia de Actualizaciones y Despliegue Continuo
 
-* **CI/CD**: Configurar un pipeline (ej. GitHub Actions) que en cada `push` a `main` ejecute los tests, construya el paquete y (opcionalmente) lo publique en la tienda.
-* **Actualización de Amenazas**: La `blacklist.json` en el CDN se actualizará de forma independiente, permitiendo una respuesta rápida a nuevas amenazas sin tener que publicar una nueva versión de la extensión.
+* **Versionado Semántico**: Usar formato `MAJOR.MINOR.PATCH` (ej. 1.0.0 → 1.0.1)
+* **CI/CD**: Configurar pipeline automatizado:
+  ```yaml
+  # Ejemplo GitHub Actions
+  - name: Build and Package
+    run: |
+      npm ci
+      npm test
+      npm run build
+      npm run package
+  ```
+* **Releases Automáticos**: Generar paquetes automáticamente en cada tag
+* **Validación Continua**: Ejecutar `npm run validate` en cada commit
+
+### Gestión de Versiones
+
+#### Para versiones PATCH (1.0.0 → 1.0.1)
+- Bug fixes menores
+- Actualizaciones de seguridad
+- Mejoras de rendimiento
+
+#### Para versiones MINOR (1.0.0 → 1.1.0)
+- Nuevas características
+- Mejoras de UI/UX
+- Nuevos métodos de detección
+
+#### Para versiones MAJOR (1.0.0 → 2.0.0)
+- Cambios incompatibles
+- Reestructuración completa
+- Nuevos permisos requeridos

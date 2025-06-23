@@ -12,7 +12,10 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:server": "node scripts/test-server.js",
-    "test:pages": "npm run build && node scripts/test-server.js"
+    "test:pages": "npm run build && node scripts/test-server.js",
+    "validate": "node scripts/validate.js",
+    "package": "npm run build && npm run validate && node scripts/package.js",
+    "release": "npm run package"
   },
   "repository": {
     "type": "git",
@@ -27,7 +30,6 @@
   },
   "homepage": "https://github.com/marcogonzalo/presentacion-salamanca#readme",
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.10",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
@@ -39,6 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^8.34.1",
     "@typescript-eslint/parser": "^8.34.1",
     "@vitejs/plugin-react": "^4.5.2",
+    "archiver": "^7.0.1",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
@@ -48,7 +51,7 @@
     "jest-environment-jsdom": "^30.0.2",
     "postcss": "^8.5.6",
     "prettier": "^3.5.3",
-    "tailwindcss": "^4.1.10",
+    "tailwindcss": "^3.4.4",
     "ts-jest": "^29.4.0",
     "typescript": "^5.8.3",
     "vite": "^6.3.5"

@@ -1,6 +1,6 @@
 # Desarrollando una idea con IA partiendo de cero
 
-En este repo muestro cómo he ido construyendo una idea de principio a fin para una presentación sobre programación con IA partiendo de cero.
+En este repo muestro (y cuento) cómo he ido construyendo una idea de principio a fin para una presentación sobre programación con IA partiendo de cero. Comparto algunas _prompts_ y capturas de pantalla del progreso y, también, unas conclusiones al final del documento.
 
 ## Paso 0: Definir el producto
 
@@ -107,3 +107,41 @@ Al ver que también se deben hacer pruebas de formularios, le pedí que generara
 Y luego, le pedí que empleara el MCP de Browser Tools para hacer las pruebas y que creara un documento con la [Guía Completa de Pruebas](./memory-bank/guia-de-pruebas.md)
 
 > Realiza las pruebas a las vistas usando el MCP de `@Browser Tools` con Chrome.
+
+## Paso 6: Implementación de la Fase 4
+
+La ejecución de la Fase 4 fue realizada sin inconvenientes. Sin embargo, detecté que en su proceso, hizo y deshizo algunas cosas. Por ejemplo, la vista de Opciones no tenía contenid (yo había eliminado el options.tsx por encontrarlo vacío). Se lo indiqué y corrigió la vista.
+
+Luego, quise mejorar la apariencia del popup. Primero, fui a HeroUI Chat para proponer una plantilla:
+ > Crea una plantilla de popup para una extensión de Chrome que dectecta si un sitio web es seguro o no, y para su vista de configuración. Hazlo colorido y no solo blanco y negro.
+
+<img alt="Vista de HeroUI con plantilla propuesta" src="./assets/images/readme/hero-ui-chat-popup-template.png" width="400" />
+
+Hice algunas capturas y se las pasé a Cursor:
+
+> Ahora, hagamos que el popup se vea más moderno y profesional. Guíate por las imágenes en cuanto a apariencia e incorpora diferencia de color cuando un sitio es seguro respecto a cuando es inseguro, también, usa un tamaño de letra que sea estándar actual y que garantice la legibilidad del contenido.
+
+En la generación de los cambios empleó reglas CSS y tuve que recordarle luego que usara Tailwind. Generó este resultado.
+
+<img alt="Primer resultado de popup" src="./assets/images/readme/paso-6-fase-4-popup-inicial.png" width="200" />
+
+Tuve que insistirle en que se guiara por las capturas y que tuviera en cuenta los colores, hasta que finalmente se logró un resultado satisfactorio:
+
+<img alt="Primer resultado de popup" src="./assets/images/readme/paso-6-fase-4-popup-final.png" width="200" />
+<img alt="Primer resultado de opciones" src="./assets/images/readme/paso-6-fase-4-opciones-final.png" width="370" />
+
+Logrado esto, tuve que indicarle que el contenido del popup no se estaba actualizando cuando la web era detectada como peligrosa, aunque el ícono sí reaccionaba. Luego, pasó a detectar todo como peligroso. En este punto le insistí en que revisara con cuidado y ejecutara todas las pruebas para garantizar el funcionamiento.
+
+Finalmente, le pedí que volviera a traducir todo al español (no me había dado cuenta de que con los ejemplos de interfaz lo había colocado en inglés) y que moviera el botón de rescan a la tab principal. 
+
+<img alt="Resultado de popup seguro" src="./assets/images/readme/popup-final-seguro.png" width="200" />
+<img alt="Resultado de popup inseguro" src="./assets/images/readme/popup-final-inseguro.png" width="200" />
+
+¡Listo! Tengo mi extensión desarrollada y, además, me ha propuesto las siguientes mejoras:
+
+- **Firefox support**: Adaptación para WebExtensions
+- **Más idiomas**: Internacionalización completa
+- **Machine Learning**: Detección local con modelos ligeros
+- **Análisis avanzado**: Detección de cryptojacking y más amenazas
+- **Dashboard**: Panel de estadísticas de navegación segura
+

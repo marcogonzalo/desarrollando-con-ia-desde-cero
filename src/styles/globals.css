@@ -24,6 +24,25 @@ body {
   color: #f9fafb;
 }
 
+/* Improve button responsiveness */
+button {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Ensure all clickable elements work properly */
+button, a, [role="button"], [onclick] {
+  pointer-events: auto !important;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
 /* Switch component styles */
 button[role="switch"] {
   position: relative;
@@ -32,6 +51,9 @@ button[role="switch"] {
   width: 44px;
   shrink: 0;
   cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
   align-items: center;
   border-radius: 9999px;
   border: 2px solid transparent;

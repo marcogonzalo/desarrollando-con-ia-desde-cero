@@ -25,13 +25,18 @@ const TRUSTED_DOMAINS = [
   'maps.google.com', 'docs.google.com', 'drive.google.com'
 ];
 
-// Phishing keywords and patterns
+// Phishing keywords and patterns (English and Spanish) - More conservative patterns
 const PHISHING_KEYWORDS = {
-  urgent: ['urgent', 'immediate', 'expires', 'limited time', 'act now', 'hurry', 'deadline'],
-  security: ['suspended', 'blocked', 'verify', 'confirm', 'security alert', 'unauthorized access'],
-  financial: ['won', 'winner', 'prize', 'lottery', 'million', 'inheritance', 'refund'],
-  action: ['click here', 'click now', 'download now', 'install now', 'update now'],
-  threats: ['will be deleted', 'will be closed', 'legal action', 'arrest warrant']
+  urgent: ['act now urgent', 'expires immediately', 'urgent immediate action', 'deadline expires', 
+           'actúa ahora urgente', 'expira inmediatamente', 'acción urgente inmediata', 'plazo vence'],
+  security: ['account suspended verify', 'verify immediately blocked', 'security alert verify', 'unauthorized access verify',
+            'cuenta suspendida verificar', 'verificar inmediatamente bloqueada', 'alerta seguridad verificar', 'acceso no autorizado verificar'],
+  financial: ['you have won million', 'lottery winner selected', 'inheritance million claim', 'congratulations winner',
+             'has ganado millón', 'ganador lotería seleccionado', 'herencia millón reclamar', 'felicidades ganador'],
+  action: ['click here immediately', 'click now verify', 'download now urgent', 'install immediately',
+          'haz clic inmediatamente', 'haga clic verificar', 'descargar urgente', 'instalar inmediatamente'],
+  threats: ['account will be deleted', 'access will be blocked', 'legal action taken', 'arrest warrant issued',
+           'cuenta será eliminada', 'acceso será bloqueado', 'acción legal tomada', 'orden arresto emitida']
 };
 
 // Suspicious script patterns
@@ -207,6 +212,11 @@ export function detectInsecureForms(forms: HTMLFormElement[], currentUrl: string
   const issues: SecurityIssue[] = [];
 
   for (const form of forms) {
+    // Ensure form has required methods for safety
+    if (!form || typeof form.getAttribute !== 'function') {
+      continue;
+    }
+    
     // Get explicit action attribute (not the computed form.action which always returns full URL)
     const explicitAction = form.getAttribute('action');
     const computedAction = form.action; // This is always a full URL
