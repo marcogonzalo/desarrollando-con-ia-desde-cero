@@ -1,6 +1,18 @@
 # Desarrollando una idea con IA partiendo de cero
 
-En este repo muestro (y cuento) cómo he ido construyendo una idea de principio a fin para una presentación sobre programación con IA partiendo de cero. Comparto algunas _prompts_ y capturas de pantalla del progreso y, también, unas conclusiones al final del documento.
+En este repo muestro (y cuento) cómo he ido construyendo una idea de principio a fin para una presentación sobre programación con IA partiendo de cero. Comparto algunas _prompts_ y capturas de pantalla del progreso y, también, unas conclusiones al final del documento. Esta experiencia ha requerido un fin de semana, dedicando pocas horas cada día. Lo que más tiempo me llevó fue establecer los pasos, entender lo siguiente a realizar y redactar mi experiencia aquí. Calculo que todo eso suma menos de 24h de trabajo, para que puedas tener una idea de todo lo realizado (y ahorrado) en ese tiempo. 
+
+A lo largo del proceso he querido utilizar distintos modelos para también experimentar con algunos nuevos.
+- Para establecer la idea, usé `Grok`, desde X, que no lo había usado hasta el momento.
+- Para diseñar el producto y su plan de implementación, empleé `Gemini 2.5 Pro` en modo `Thinking`. Con Gemini sí he conversado sobre muchas cosas.
+- Para la ejecución, no dudé en usar `Claude Sonnet 4`. Ahí sí tengo favoritismo absoluto.
+- Para la propuesta de interfaz (el código ya lo había construido Claude) empleé `HeroUI`.
+
+Para esta experiencia ya venía realizando pruebas e investigación, por supuesto, pero es la primera vez que decido **delegar al 100% el desarrollo** a la IA. La estructura de trabajo de este proyecto está inspirada en los [talleres de Vibe Coding](https://www.youtube.com/watch?v=p424-lrx-1A) realizados por @[alesanchezr](https://github.com/alesanchezr) para crear su proyecto [Vibe Culture](https://github.com/alesanchezr/vibe-culture). 
+
+
+--------
+
 
 ## Paso 0: Definir el producto
 
@@ -17,7 +29,7 @@ Le he pedido que desarrolle una pequeña _prompt_ con la descripción y las cara
 
 ## Paso 2: Establecer el plan de implementación
 
-He creado un fichero llamado `./memory-bank/plan-de-implementacion.md` y le he pedido `Gemini 2.5 Pro Thinking` que me desarrolle un plan de implementación y lo incorpore al banco de memoria.
+He creado un fichero llamado `./memory-bank/plan-de-implementacion.md` y le he pedido a Cursor que me desarrolle un plan de implementación y lo incorpore al banco de memoria.
 
 > Con base en @sobre-el-producto.md y teniendo en consideración las características allí descritas, quiero que desarrolles un plan de implementación y lo escribas en @plan-de-implementacion.md con pasos mínimos necesarios para empezar a incorporar funcionalidades y alcanzar el MVP.
 >
@@ -145,3 +157,16 @@ Finalmente, le pedí que volviera a traducir todo al español (no me había dado
 - **Análisis avanzado**: Detección de cryptojacking y más amenazas
 - **Dashboard**: Panel de estadísticas de navegación segura
 
+
+--------
+
+## Conclusiones
+- Desarrollar apoyándose en la IA tiene un impacto enorme en el desarrollo de software:
+  - Reducción radical del tiempo de desarrollo
+  - Eliminación del trabajo repetitivo (plantillas, componentes...)
+  - Dedicar más tiempo al desarrollo del producto y no del código.
+- El trabajo previo, describiendo el producto y definiendo un plan de implementación marca la diferencia en la ejecución.
+- El banco de memoria juega un papel muy importante al permitirle mantener contexto y alinearle mejor el resultado.
+- Resulta mejor iterar que analizar cómo resolver algunos errores.
+- Hay que aprender a no intervenir en el proceso, respetar la lógica de la IA y, en caso de equivocarse, corregirle mediante conversación, en lugar de tocar el código.
+- Las nociones y fundamentes de desarrollo son muy importantes porque permiten entender qué va haciendo, así sea la primera vez que haces un desarrollo de ese tipo (en mi caso, nunca había hecho una extensión).
